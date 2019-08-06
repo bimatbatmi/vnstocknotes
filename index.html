@@ -177,6 +177,9 @@
 
 		loadCSV();
 	}
+	
+	//var HTTP_REQUEST_PROXY_URL = 'https://jsonp.afeld.me/?url=';
+	var HTTP_REQUEST_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
 
 	function loadCSV() {
 		// Notes: 
@@ -215,10 +218,14 @@
 		// })
 		// .catch(() => alert('oh no!'));
 		
+		var stockSymbolQueryUrl = HTTP_REQUEST_PROXY_URL + "http://s.cafef.vn/ajax/marketmap.ashx?stock=1"
 
+		//var url = HTTP_REQUEST_PROXY_URL + "https://drive.google.com/uc?export=download&id=131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF";
+		var url = stockSymbolQueryUrl;
+		
 		var blob = null;
 		var xhr = new XMLHttpRequest(); 
-		xhr.open("GET", "https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF"); 
+		xhr.open("GET", url);
 		xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
 		xhr.onload = function() 
 		{
@@ -495,10 +502,7 @@
 			loadDataJsonOneCate(stock, selectedCate, needToClearContainer);
 		}
 	}
-	
-	//var HTTP_REQUEST_PROXY_URL = 'https://jsonp.afeld.me/?url=';
-	var HTTP_REQUEST_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
-
+		
     // Load stock Data for one Sector
 	function loadDataJsonOneCate(stock, cate, needToClearContainer) {
 		console.log('loadDataJsonOneCate');
