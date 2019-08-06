@@ -176,10 +176,29 @@
 		}
 
 		loadCSV();
+		
+		load2();
 	}
 	
 	//var HTTP_REQUEST_PROXY_URL = 'https://jsonp.afeld.me/?url=';
 	var HTTP_REQUEST_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+	
+	function load2() {
+		var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+		var options.method = 'GET';
+		options.url = 'http://s.cafef.vn/ajax/marketmap.ashx?stock=1';
+	
+		var x = new XMLHttpRequest();
+		x.open(options.method, cors_api_url + options.url);
+		x.onload = x.onerror = function() {
+		  console.log(
+			options.method + ' ' + options.url + '\n' +
+			x.status + ' ' + x.statusText + '\n\n' +
+			(x.responseText || '')
+		  );
+		};		
+		x.send(options.data);
+	}
 
 	function loadCSV() {
 		// Notes: 
