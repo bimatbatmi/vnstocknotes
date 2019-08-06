@@ -660,43 +660,50 @@
 		console.log('loadAllStockFromCafef: ' + stockSymbolQueryUrl);
 		
 		
+		///////////////////////
+		var s = document.createElement("script");
+		s.src = "http://s.cafef.vn/ajax/marketmap.ashx?stock=1";
+		console.log(s);
+		document.body.appendChild(s);
 		
-		 var http = $.ajax({
-		 	url: stockSymbolQueryUrl,
-		 	dataType: "json"        //This is what makes jQuery parse the data in the expected format
-		 });
-
-		 http.done(function(data){
-		 	// data is already parsed as JSON
-		 	console.log('loadAllStockFromCafef: request done');
-			
-		 	for(var i = 1; i < data.length; i++) {
-		 		var obj = data[i];
-
-		 		ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
-		 	}
-		 });
-
-		//var req1 = getXMLHttpRequest();
-		////req.responseType = 'json';
-		//req1.onreadystatechange = function() {
+		//////////////////////
+				
+		// var http = $.ajax({
+		// 	url: stockSymbolQueryUrl,
+		// 	dataType: "json"        //This is what makes jQuery parse the data in the expected format
+		// });
 //
-		//	if (this.readyState == 4 && this.status == 200) {
-		//		console.log('loadAllStockFromCafef: request done, responseText: ' + this.responseText);
-		//		console.log('loadAllStockFromCafef: request done, reponse: ' + this.response);
-		//		var data = JSON.parse(this.responseText);
-		//		for(var i = 1; i < data.length; i++) {
-		//			var obj = data[i];
+		// http.done(function(data){
+		// 	// data is already parsed as JSON
+		// 	console.log('loadAllStockFromCafef: request done');
+		//	
+		// 	for(var i = 1; i < data.length; i++) {
+		// 		var obj = data[i];
 //
-		//			ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
-		//		}
-		//	}
-		//};
-  //
-		//req1.open('GET', stockSymbolQueryUrl, true);
-		////req.setRequestHeader("Access-Control-Allow-Origin", '*');		
-		//
-		//req1.send();
+		// 		ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+		// 	}
+		// });
+
+		var req1 = getXMLHttpRequest();
+		//req.responseType = 'json';
+		req1.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				console.log('loadAllStockFromCafef: request done, responseText: ' + this.responseText);
+				console.log('loadAllStockFromCafef: request done, reponse: ' + this.response);
+				var data = JSON.parse(this.responseText);
+				for(var i = 1; i < data.length; i++) {
+					var obj = data[i];
+
+					ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+				}
+			}
+		};
+  
+		req1.open('GET', stockSymbolQueryUrl, true);
+		//req.setRequestHeader("Access-Control-Allow-Origin", '*');		
+		
+		req1.send();
 
 		// HASTC: load all stocks
 		stock = 2; 
