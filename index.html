@@ -223,6 +223,18 @@
 		xhr.onload = function() 
 		{
 			blob = xhr.response;//xhr.response is now a blob object
+			
+			const reader = new FileReader();
+
+			// This fires after the blob has been read/loaded.
+			reader.addEventListener('loadend', (e) => {
+			  const text = e.srcElement.result;
+			  console.log(text);
+			  successFunction(text);
+			});
+
+			// Start reading the blob as text.
+			reader.readAsText(blob);
 		}
 		xhr.send();
 
