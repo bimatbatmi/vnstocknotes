@@ -532,7 +532,7 @@
 		
 		// 2. Using XMLHttpRequest
 		var req = getXMLHttpRequest();
-		//req.responseType = 'json';
+		req.responseType = 'json';
 		req.onreadystatechange = function() {
 
 			if (this.readyState == 4 && this.status == 200) {
