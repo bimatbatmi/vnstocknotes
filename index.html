@@ -1,0 +1,1030 @@
+<html xmlns="https://www.w3.org/1999/xhtml" xmlns:fb="https://www.facebook.com/2008/fbml" xmlns:og="https://ogp.me/ns#"><head id="ctl00_Head1"><title>
+	VN30 | CafeF.vn | bimat_batmi
+</title>
+
+<link href="https://cafef3.vcmedia.vn/mobile/m/styles/jquery-ui.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="https://cafef3.vcmedia.vn/v2/styles/stylesv3.20160226.css">    
+    <!--[if lte IE 6]><link rel="stylesheet" type="text/css" href="https://cafef3.vcmedia.vn/images/v3/ie618112013.css" /><![endif]-->
+    <!--[if IE 7]><link rel="stylesheet" type="text/css" href="https://cafef3.vcmedia.vn/images/v3/ie718112013.css" /><![endif]-->
+    <!--[if lte IE 7]><style type="text/css">#data-title-bar li span {display: none;}</style><![endif]-->
+    <link href="https://cafef3.vcmedia.vn/v2/styles/tooltip.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<link rel="shortcut icon" href="https://cafef3.vcmedia.vn/v2/images/favicon.ico">
+   
+
+    
+</head>
+<body style="background-color: rgb(255, 255, 255)" onload="onloaded();">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+<script>
+
+//*[@id="hose-indecies-grid"]
+		
+	//// Create the XHR object.
+	//function createCORSRequest(method, url) {
+	//  var xhr = new XMLHttpRequest();
+	//  if ("withCredentials" in xhr) {
+	//	// XHR for Chrome/Firefox/Opera/Safari.
+	//	xhr.open(method, url, true);
+	//  } else if (typeof XDomainRequest != "undefined") {
+	//	// XDomainRequest for IE.
+	//	xhr = new XDomainRequest();
+	//	xhr.open(method, url);
+	//  } else {
+	//	// CORS not supported.
+	//	xhr = null;
+	//  }
+	//  return xhr;
+	//}
+//
+	//// Helper method to parse the title tag from the response.
+	//function getTitle(text) {
+	//  return text.match('<title>(.*)?</title>')[1];
+	//}
+
+	//// Make the actual CORS request.
+	//function makeCorsRequest() {
+	//  // This is a sample server that supports CORS.
+	//  //var url = 'https://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
+	//  var url = 'https://www.hsx.vn/Modules/Listed/Web/StockIndexView/1964531007';
+//
+	//  var xhr = createCORSRequest('GET', url);
+	//  if (!xhr) {
+	//	alert('CORS not supported');
+	//	return;
+	//  }
+
+	//  // Response handlers.
+	//  xhr.onload = function() {
+	//	var text = xhr.responseText;
+	//	var title = getTitle(text);
+	//	alert('Response from CORS request to ' + url + ': ' + title);
+	//  };
+
+	//  xhr.onerror = function() {
+	//	alert('Woops, there was an error making the request.');
+	//  };
+//
+	//  xhr.send();
+	//}
+	//
+	function getXMLHttpRequest() {
+		var req;
+		var ua = navigator.userAgent.toLowerCase();
+		if (!window.ActiveXObject)
+		  req = new XMLHttpRequest();
+		else if (ua.indexOf('msie 5') == -1)
+		  req = new ActiveXObject("Msxml2.XMLHTTP");
+		else
+		  req = new ActiveXObject("Microsoft.XMLHTTP");
+		  	
+		  
+		return req;
+	}
+	
+	//function loadVN30() {
+	//	var req = getXMLHttpRequest();
+	//	req.onreadystatechange = function() {
+	//		if (this.readyState == 4 && this.status == 200) {
+	//			dump(req.responseText);
+	//		}
+	//	};
+  //
+	//	req.open('GET', 'https://www.hsx.vn/Modules/Listed/Web/StockIndexView/1964531007', true);   
+	//	req.setRequestHeader("Access-Control-Allow-Origin", '*');		
+	//	
+	//	req.send(); 
+	//	 
+	//}
+		
+	var CATEGORYS = [];
+	
+	var MCK_VN30 = ["BID", "BMP", "BVH", "CII", "CTD", "CTG", "DHG", "DPM",
+	"FPT", "GAS", "GMD", "HPG", "HSG", "KDC", "MBB", "MSN", "MWG", "NT2", "NVL",
+	"PLX", "REE", "ROS", "SAB", "SBT", "SSI", "STB", "VCB", "VIC", "VJC", "VNM"];
+
+	var MCK_HNX30 = ["ACB", "BCC", "BVS", "CEO", "DBC", "DCS", "DGC", "HHG",
+	 "HUT", "IDV", "LAS", "LHC", "MAS", "NDN", "NTP", "PGS", "PLC", "PVC",
+	  "PVI", "PVS", "S55", "S99", "SHB", "SHS", "TV2", "VC3", "VCG", "VCS", "VNR", "VTV"];
+
+	var MCK = [];
+	
+	var CHART_SCALE = 100;
+	var CHART_CELL_WIDTH = 180;
+	var CHART_CELL_HEIGHT = 100;
+	var COL_NUM = 6;
+
+	String.prototype.format = function() {
+		a = this;
+		for (k in arguments) {
+			a = a.replace("{" + k + "}", arguments[k])
+		}
+		return a
+	}
+
+	function init() {
+		CATEGORYS = [];
+		CATEGORYS.push({value:345, name:"Bất động sản và Xây dựng"});
+		CATEGORYS.push({value:347, name:"Công nghệ"});
+		CATEGORYS.push({value:343, name:"Công nghiệp"});
+		CATEGORYS.push({value:346, name:"Dịch vụ"});
+		CATEGORYS.push({value:349, name:"Doanh nghiệp OTC"});
+		CATEGORYS.push({value:350, name:"Doanh nghiệp Upcom"});
+		CATEGORYS.push({value:339, name:"Hàng tiêu dùng"});
+		CATEGORYS.push({value:340, name:"Năng lượng"});
+		CATEGORYS.push({value:344, name:"Nguyên vật liệu"});
+		CATEGORYS.push({value:338, name:"Nông nghiệp"});
+		CATEGORYS.push({value:341, name:"Tài chính"});
+		CATEGORYS.push({value:348, name:"Viễn thông"});
+		CATEGORYS.push({value:342, name:"Y tế"});
+
+		for (var i = 0; i < MCK_VN30.length; i++) {
+			MCK_VN30[i] = {symbol: MCK_VN30[i], url: ""};
+		}
+
+		for (var i = 0; i < MCK_HNX30.length; i++) {
+			MCK_HNX30[i] = {symbol: MCK_HNX30[i], url: ""};
+		}
+	}
+
+	function getCateGory(value) {
+		for (var i = 0; i < CATEGORYS.length; i++) {
+			if (CATEGORYS[i].value == value) {
+				return CATEGORYS[i];
+			}				
+		}
+		return null;
+	}
+
+	function onloaded() {
+		init();
+
+		showDateTime();
+
+		//doGroupChanged();
+
+		//loadDataJson();
+
+		loadAllStockFromCafef();
+
+		// Check for the various File API support.
+		if (window.File && window.FileReader && window.FileList && window.Blob) {
+			// Great success! All the File APIs are supported.
+		} else {
+			alert('The File APIs are not fully supported in this browser.');
+		}
+
+		loadCSV();
+	}
+
+	function loadCSV() {
+		// Notes: 
+		// + Chrome: cannot access a local file in Browser because of security
+		// + IE, Firefox: allow, access local file OK
+		//$.ajax({
+		//	url:'Cafef_All_Symbols.csv',
+		//	dataType:'text'
+		//}).done(successFunction);
+
+		//$.ajax({
+		//	url:'../../Phan tich/T3_Explorer_Batch/T3.csv',
+		//	dataType:'text'
+		//}).done(successFunction)
+		//  .fail(function(xhr, textStatus, errorThrown){
+       	//		alert('Load T3.csv failed');
+    	//	});
+
+		// Ticker,Date/Time,Buy Today,Volume Today,Close Today ,BuyPrice,BuyDate,PercentUp %,UpDays
+		// VIC,7/18/2018,1,1918790,105.00,105.00,7/18/2018,0.00,0
+
+		// load from url
+		// fetch('https://drive.google.com/uc?export=download&id=131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF', {mode: 'cors'})
+		// .then(resp => resp.blob())
+		// .then(blob => {
+		// 	const url = window.URL.createObjectURL(blob);
+		// 	const a = document.createElement('a');
+		// 	a.style.display = 'none';
+		// 	a.href = url;
+		// 	// the filename you want
+		// 	a.download = 'T3.csv';
+		// 	document.body.appendChild(a);
+		// 	a.click();
+		// 	window.URL.revokeObjectURL(url);
+		// 	alert('your file has downloaded!'); // or you know, something with better UX...
+		// })
+		// .catch(() => alert('oh no!'));
+		
+
+		var blob = null;
+		var xhr = new XMLHttpRequest(); 
+		xhr.open("GET", "https://drive.google.com/uc?export=download&id=131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF"); 
+		xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
+		xhr.onload = function() 
+		{
+			blob = xhr.response;//xhr.response is now a blob object
+		}
+		xhr.send();
+
+		// $.ajax(
+		// 	{
+		// 		type:'GET',
+		// 		url:'https://drive.google.com/uc?export=download&id=131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF',
+			
+		// 		success: function(data){
+		// 			alert('successful');
+		// 		}
+		// 	}
+		// );
+	}
+
+	// T3.csv data file: share in Hiep Google Drive
+	// link: https://drive.google.com/file/d/131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF/view?usp=sharing
+	// download link: https://drive.google.com/uc?export=download&id=131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF
+
+    // handle function for file selector
+	function handleFileSelect(evt) {
+		var files = evt.target.files; // FileList object
+
+		// Loop through the FileList and render image files as thumbnails.
+		for (var i = 0, f; f = files[i]; i++) {
+
+			// Only process image files.
+			//if (!f.type.match('*.csv')) {
+			//	continue;
+			//}
+
+			var reader = new FileReader();
+
+			// Closure to capture the file information.
+			reader.onload = (function(theFile) {
+				return function(e) {
+					successFunction(e.target.result);				
+				};
+			})(f);
+
+			// Read in the image file as a data URL.
+			reader.readAsText(f);
+		}
+  	}
+
+    // parse csv file and create table: stock symbol and link
+	// 1. T3.csv format:
+	// Ticker,Date/Time,Buy Today,Volume Today,Close Today ,BuyPrice,BuyDate,PercentUp %,UpDays
+	// VIC,7/18/2018,1,1918790,105.00,105.00,7/18/2018,0.00,0
+	// 2. T3_Sumarize format:
+	// ,,,,,,, 5.21 ,,,," 140,000,000 "," 147,293,900 "," 7,293,900 ",5.21%
+	// Ticker,Date/Time,Buy Today,Volume Today,Close Today ,BuyPrice,BuyDate,PercentUp %,SellPrice,UpDays,,,,,
+	// VPG,7/20/2018,1,88890,17.5,17.5,7/20/2018,0,0,0,," 1,000,000 "," 1,000,000 ", -   ,
+	function successFunction(data) {
+		var allRows = data.split(/\r?\n|\r/);
+		var table = '<table>';
+		for (var singleRow = 0; singleRow < allRows.length; singleRow++) {
+			
+			if (singleRow === 0) {
+				// Header
+				table += '<thead>';
+				table += '<tr>';
+			} else {
+				//table += '<tr>';
+			}
+			//var rowCells = allRows[singleRow].split(',');
+			var rowCells = CSVtoArray(allRows[singleRow]);
+			var rowString = '';
+			var percentUp = 0;
+			
+			for (var rowCell = 0; rowCell < rowCells.length; rowCell++) {
+				var sellPrice = -1;
+				var buyVolumnCondition = 1;
+
+				if (singleRow === 0) {
+					// Header
+					table += '<th>';
+					table += rowCells[rowCell];
+					table += '</th>';
+				} else {
+					
+					if (rowCell == 0) {
+						// Ticker
+						var ticker = rowCells[rowCell];
+						var existedSymbolObj = findMCK(ticker);
+												
+						rowString += '<td>';
+						if (existedSymbolObj === undefined) {
+							rowString += '<a href="' + '' + '">';
+						} else {
+							rowString += '<a href="' + existedSymbolObj.url + '" target="_blank">';
+						}
+						rowString += ticker;
+						rowString += '</a>';
+
+						rowString += '</td>';						
+					} else {
+						if (rowCell == 7) {
+							// PercentUp
+							percentUp = parseFloat(rowCells[rowCell]);
+						} else if (rowCell == 8) {
+							// SellPrice
+							sellPrice = parseFloat(rowCells[rowCell]);
+						} else if (rowCell == 11) {
+							// BuyVolumnCondition
+							buyVolumnCondition = parseInt(rowCells[rowCell]);
+						}
+
+						if (sellPrice > 0) {
+							// already sell, set gray color from column SellPrice to end of row.
+							rowString += '<td style="background-color:' + grayColorString + '">';
+							rowString += rowCells[rowCell];
+							rowString += '</td>';
+						} else if (buyVolumnCondition <= 0) {
+							// Volumn not strong enough, set color from column BuyVolumn condition to end of row.
+							rowString += '<td style="background-color:' + volumnNotStrongColorString + '">';
+							rowString += rowCells[rowCell];
+							rowString += '</td>';
+						} else {
+							rowString += '<td>';
+							rowString += rowCells[rowCell];
+							rowString += '</td>';
+						}
+						
+					}
+				}
+			}
+			if (singleRow === 0) {
+				table += '</tr>';
+				table += '</thead>';
+				table += '<tbody>';
+			} else {
+				//if (sellPrice > 0) {
+					// already sell, set gray color
+					//table += '<tr style="background-color:' + grayColorString + '">';	
+					//table += rowString;
+					//table += '</tr>';
+				//} else {
+					// Set row color by percentage
+					table += '<tr style="background-color:' + getColorForPercentage(percentUp) + '">';	
+					table += rowString;
+					table += '</tr>';
+				//}
+				
+			}
+		} 
+		table += '</tbody>';
+		table += '</table>';
+
+		var t3_viewDiv = document.getElementById('t3_view');
+		t3_viewDiv.innerHTML = table;
+	}
+
+	////////// CSV parser ///////////
+	// https://stackoverflow.com/questions/8493195/how-can-i-parse-a-csv-string-with-javascript-which-contains-comma-in-data
+	// Return array of string values, or NULL if CSV string not well formed.
+	function CSVtoArray(text) {
+		var re_valid = /^\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*(?:,\s*(?:'[^'\\]*(?:\\[\S\s][^'\\]*)*'|"[^"\\]*(?:\\[\S\s][^"\\]*)*"|[^,'"\s\\]*(?:\s+[^,'"\s\\]+)*)\s*)*$/;
+		var re_value = /(?!\s*$)\s*(?:'([^'\\]*(?:\\[\S\s][^'\\]*)*)'|"([^"\\]*(?:\\[\S\s][^"\\]*)*)"|([^,'"\s\\]*(?:\s+[^,'"\s\\]+)*))\s*(?:,|$)/g;
+		// Return NULL if input string is not well formed CSV string.
+		if (!re_valid.test(text)) return null;
+		var a = [];                     // Initialize array to receive values.
+		text.replace(re_value, // "Walk" the string using replace with callback.
+			function(m0, m1, m2, m3) {
+				// Remove backslash from \' in single quoted values.
+				if      (m1 !== undefined) a.push(m1.replace(/\\'/g, "'"));
+				// Remove backslash from \" in double quoted values.
+				else if (m2 !== undefined) a.push(m2.replace(/\\"/g, '"'));
+				else if (m3 !== undefined) a.push(m3);
+				return ''; // Return empty string.
+			});
+		// Handle special case of empty last value.
+		if (/,\s*$/.test(text)) a.push('');
+		return a;
+	};
+	///////// End CSV Parser ///////
+
+	function findMCK(symbol) {
+		var csvContent = '';
+		for (var index = 0; index < ALL_MCK.length; index++) {
+			if (ALL_MCK[index].symbol == symbol) {
+				return ALL_MCK[index];
+			}
+		}
+	}
+
+	// Get color by percentage
+	// Declare color upon percentage
+	//var grayColor = { r: 0x51, g: 0x4B, b: 0x4B };
+	var grayColor = { r: 0x7C, g: 0x7A, b: 0x7A };
+	var grayColorString = 'rgb(' + [grayColor.r, grayColor.g, grayColor.b].join(',') + ')'
+
+    // Volumn not strong color
+	var veryLightRedColor = { r: 0xFF, g: 0xDF, b: 0xDF };
+	var volumnNotStrongColorString = 'rgb(' + [veryLightRedColor.r, veryLightRedColor.g, veryLightRedColor.b].join(',') + ')'
+
+	var percentColors = [
+		{ pct: -5, color: { r: 0xff, g: 0x00, b: 0 } }, // red
+		{ pct: -3, color: { r: 0xff, g: 0x37, b: 0x37 } }, // light red
+		{ pct: -0.1, color: { r: 0xff, g: 0x62, b: 0x62 } }, // ligher red
+		{ pct: 0, color: { r: 0xff, g: 0xff, b: 0 } }, // yellow
+		{ pct: 5, color: { r: 0x76, g: 0xff, b: 0x76 } }, // lighter green
+		{ pct: 9, color: { r: 0x3a, g: 0xff, b: 0x3a } }, // light green
+		{ pct: 13, color: { r: 0x00, g: 0xff, b: 0 } }, // green
+		{ pct: 15, color: { r: 0xff, g: 0x70, b: 0xff } }, // lighter purple
+		{ pct: 20, color: { r: 0xff, g: 0x30, b: 0xff } }, // light purple
+		{ pct: 30, color: { r: 0xff, g: 0x00, b: 0xff } } ]; // purple
+
+	var getColorForPercentage = function(pct) {
+		for (var i = 1; i < percentColors.length - 1; i++) {
+			if (pct < percentColors[i].pct) {
+				break;
+			}
+		}
+		var lower = percentColors[i - 1];
+		var upper = percentColors[i];
+		var range = upper.pct - lower.pct;
+		var rangePct = (pct - lower.pct) / range;
+		var pctLower = 1 - rangePct;
+		var pctUpper = rangePct;
+		var color = {
+			r: Math.floor(lower.color.r * pctLower + upper.color.r * pctUpper),
+			g: Math.floor(lower.color.g * pctLower + upper.color.g * pctUpper),
+			b: Math.floor(lower.color.b * pctLower + upper.color.b * pctUpper)
+		};
+		return 'rgb(' + [color.r, color.g, color.b].join(',') + ')';
+		// or output as hex if preferred
+	}  
+	
+	function StockSymbol() {
+	}
+
+	function loadDataJson() {
+
+		var cmbStock = document.getElementById('cmbStock');
+		var stock = cmbStock.value;
+		var cmbCate = document.getElementById('cmbCate');
+		var cateValue = cmbCate.value;
+
+		var selectedCate = getCateGory(cateValue);
+
+		var needToClearContainer = true;
+		if (cateValue == "") {
+			// all category
+			needToClearContainer = false;
+
+			var container = document.getElementById('stock_n_cate_container');
+			// remove old data
+			while (container.firstChild) {
+				container.removeChild(container.firstChild);
+			}
+
+			for (var i = 0; i < CATEGORYS.length; i++) {
+				var cat = CATEGORYS[i];
+				loadDataJsonOneCate(stock, cat, needToClearContainer);
+			}
+		} else {
+			loadDataJsonOneCate(stock, selectedCate, needToClearContainer);
+		}
+	}
+	
+	var HTTP_REQUEST_PROXY_URL = 'https://jsonp.afeld.me/?url=';
+
+    // Load stock Data for one Sector
+	function loadDataJsonOneCate(stock, cate, needToClearContainer) {
+		console.log('loadDataJsonOneCate');
+		
+		var stockSymbolQueryUrl = HTTP_REQUEST_PROXY_URL + "http://s.cafef.vn/ajax/marketmap.ashx?stock=" + stock +"&cate=" + cate.value;
+
+// Data example:
+		// [{"Symbol":"341","Parent":"","Value":0,"Color":0,"Name":"","Price":"","Percent":"","Url":"","NoneSymbol":""},
+		//  {"Symbol":"ACB (+0.2%)","Parent":"341","Value":2787061,"Color":100,"Name":"Ngân hàng Thương mại Cổ phần Á Châu","Price":"48.6","Percent":"0.2","Url":"http://s.cafef.vn/hastc/ACB-ngan-hang-thuong-mai-co-phan-a-chau.chn","NoneSymbol":"ACB"},
+		//  {"Symbol":"API (0%)","Parent":"341","Value":200,"Color":0,"Name":"Công ty Cổ phần Đầu tư Châu Á - Thái Bình Dương","Price":"28.9","Percent":"0","Url":"http://s.cafef.vn/hastc/API-cong-ty-co-phan-dau-tu-chau-a-thai-binh-duong.chn","NoneSymbol":"API"},
+		//   ...
+		// ]
+
+		// 1. Using Ajax
+		// var http = $.ajax({
+		// 	url: stockSymbolQueryUrl,
+		// 	async: false,
+		// 	dataType: "json"        //This is what makes jQuery parse the data in the expected format
+		// });
+
+		// http.done(function(data){
+		// 	// data is already parsed as JSON
+			
+		// 	// clear MCK array
+			
+		// 	console.log('loadDataJsonOneCate: request done');
+
+		// 	requestLoadDataJsonOneCateDone(data);
+			
+		// });
+		
+		// 2. Using XMLHttpRequest
+		var req = getXMLHttpRequest();
+		//req.responseType = 'json';
+		req.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				console.log('loadDataJsonOneCate: request done');
+
+				requestLoadDataJsonOneCateDone(stock, cate, needToClearContainer, JSON.parse(req.responseText));
+			}
+		};
+  
+		req.open('GET', stockSymbolQueryUrl, true);
+		//req.setRequestHeader("Access-Control-Allow-Origin", '*');		
+		
+		req.send();
+	}
+
+	function requestLoadDataJsonOneCateDone(stock, cate, needToClearContainer, data) {
+			MCK = [];
+
+			for(var i = 1; i < data.length; i++) {
+				var obj = data[i];
+
+				MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+			}
+
+			//$("#demo").html(MCK.toString());
+
+			var container = document.getElementById('stock_n_cate_container');
+			container.style.display = "block";
+
+			var cmbStock = document.getElementById('cmbStock');
+			var selIndex = cmbStock.selectedIndex;
+			var stockLabel = cmbStock.options[selIndex].text;
+
+			//var stockLabel = $("#cmbStock option:selected").text();
+			var cateLabel = cate.name;
+			
+			console.log('loadDataJsonOneCate: ' + stockLabel + " " + cateLabel);
+
+			if (needToClearContainer == true) {
+				clearContainer(container);
+			}
+
+			var titleDiv = document.createElement('div');
+			titleDiv.innerHTML = (stockLabel + " - " + cateLabel + " (Total: " + MCK.length + ")");
+
+			console.log('loadDataJsonOneCate: ' + titleDiv.innerHTML);
+
+			container.appendChild(titleDiv);
+
+			createChartTable(container, MCK);
+	}
+
+	function loadAllStockFromCafef() {
+		console.log('loadAllStockFromCafef');
+		ALL_MCK = [];
+
+		// Data example:
+		// [{"Symbol":"341","Parent":"","Value":0,"Color":0,"Name":"","Price":"","Percent":"","Url":"","NoneSymbol":""},
+		//  {"Symbol":"ACB (+0.2%)","Parent":"341","Value":2787061,"Color":100,"Name":"Ngân hàng Thương mại Cổ phần Á Châu","Price":"48.6","Percent":"0.2","Url":"http://s.cafef.vn/hastc/ACB-ngan-hang-thuong-mai-co-phan-a-chau.chn","NoneSymbol":"ACB"},
+		//  {"Symbol":"API (0%)","Parent":"341","Value":200,"Color":0,"Name":"Công ty Cổ phần Đầu tư Châu Á - Thái Bình Dương","Price":"28.9","Percent":"0","Url":"http://s.cafef.vn/hastc/API-cong-ty-co-phan-dau-tu-chau-a-thai-binh-duong.chn","NoneSymbol":"API"},
+		//   ...
+		// ]
+
+		// HOSE: load all stocks	
+		stock = 1; 
+		var stockSymbolQueryUrl = HTTP_REQUEST_PROXY_URL + "http://s.cafef.vn/ajax/marketmap.ashx?stock=" + stock;
+
+		console.log('loadAllStockFromCafef: ' + stockSymbolQueryUrl);
+		// var http = $.ajax({
+		// 	url: stockSymbolQueryUrl,
+		// 	async: false, 
+		// 	dataType: "json"        //This is what makes jQuery parse the data in the expected format
+		// });
+
+		// http.done(function(data){
+		// 	// data is already parsed as JSON
+		// 	console.log('loadAllStockFromCafef: request done');
+			
+		// 	for(var i = 1; i < data.length; i++) {
+		// 		var obj = data[i];
+
+		// 		ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+		// 	}
+		// });
+
+		var req1 = getXMLHttpRequest();
+		//req.responseType = 'json';
+		req1.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				console.log('loadAllStockFromCafef: request done, responseText: ' + this.responseText);
+				console.log('loadAllStockFromCafef: request done, reponse: ' + this.response);
+				var data = JSON.parse(this.responseText);
+				for(var i = 1; i < data.length; i++) {
+					var obj = data[i];
+
+					ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+				}
+			}
+		};
+  
+		req1.open('GET', stockSymbolQueryUrl, true);
+		//req.setRequestHeader("Access-Control-Allow-Origin", '*');		
+		
+		req1.send();
+
+		// HASTC: load all stocks
+		stock = 2; 
+		var stockSymbolQueryUrl = HTTP_REQUEST_PROXY_URL + "http://s.cafef.vn/ajax/marketmap.ashx?stock=" + stock;
+
+		// var http = $.ajax({
+		// 	url: stockSymbolQueryUrl,
+		// 	async: false, 
+		// 	dataType: "json"        //This is what makes jQuery parse the data in the expected format
+		// });
+
+		// http.done(function(data){
+		// 	// data is already parsed as JSON
+			
+		// 	for(var i = 1; i < data.length; i++) {
+		// 		var obj = data[i];
+
+		// 		ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+		// 	}
+		// });
+
+		var req2 = getXMLHttpRequest();
+		//req.responseType = 'json';
+		req2.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				console.log('loadAllStockFromCafef: request done');
+				var data = JSON.parse(this.responseText);
+				for(var i = 1; i < data.length; i++) {
+					var obj = data[i];
+
+					ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+				}
+			}
+		};
+  
+		req2.open('GET', stockSymbolQueryUrl, true);
+		//req.setRequestHeader("Access-Control-Allow-Origin", '*');		
+		
+		req2.send();
+
+		// UPCOM: load all stocks
+		stock = 9;
+		var stockSymbolQueryUrl = HTTP_REQUEST_PROXY_URL + "http://s.cafef.vn/ajax/marketmap.ashx?stock=" + stock;
+
+		// var http = $.ajax({
+		// 	url: stockSymbolQueryUrl,
+		// 	async: false,
+		// 	dataType: "json"        //This is what makes jQuery parse the data in the expected format
+		// });
+
+		// http.done(function(data){
+		// 	// data is already parsed as JSON
+			
+		// 	for(var i = 1; i < data.length; i++) {
+		// 		var obj = data[i];
+
+		// 		ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+		// 	}
+		// });
+
+		var req9 = getXMLHttpRequest();
+		//req9.responseType = 'json';
+		req9.onreadystatechange = function() {
+
+			if (this.readyState == 4 && this.status == 200) {
+				console.log('loadAllStockFromCafef: request done');
+				var data = JSON.parse(this.responseText);
+				for(var i = 1; i < data.length; i++) {
+					var obj = data[i];
+
+					ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+				}
+			}
+		};
+  
+		req9.open('GET', stockSymbolQueryUrl, true);
+		//req9.setRequestHeader("Access-Control-Allow-Origin", '*');		
+		
+		req9.send();
+
+		//saveAllStockToFileCsv(ALL_MCK);
+		
+	}
+
+	function saveAllStockToFileCsv(ALL_MCK) {
+		// var csvContent = '';
+		// for (var index = 0; index < ALL_MCK.length; index++) {
+		// 	csvContent += ALL_MCK[index].symbol + ',' + ALL_MCK[index].url + '\n';
+		// }
+
+		// // The download function takes a CSV string, the filename and mimeType as parameters
+		// // Scroll/look down at the bottom of this snippet to see how download is called
+		// var download = function(content, fileName, mimeType) {
+		// 	var a = document.createElement('a');
+		// 	mimeType = mimeType || 'application/octet-stream';
+
+		// 	if (navigator.msSaveBlob) { // IE10
+		// 		navigator.msSaveBlob(new Blob([content], {
+		// 		type: mimeType
+		// 		}), fileName);
+		// 	} else if (URL && 'download' in a) { //html5 A[download]
+		// 		a.href = URL.createObjectURL(new Blob([content], {
+		// 		type: mimeType
+		// 		}));
+		// 		a.setAttribute('download', fileName);
+		// 		document.body.appendChild(a);
+		// 		a.click();
+		// 		document.body.removeChild(a);
+		// 	} else {
+		// 		location.href = 'data:application/octet-stream,' + encodeURIComponent(content); // only this mime type is supported
+		// 	}
+		// }
+
+		// download(csvContent, 'Cafef_All_Symbols.csv', 'text/csv;encoding:utf-8');
+	}
+
+	function clearContainer(container) {
+		while (container.firstChild) {
+				container.removeChild(container.firstChild);
+			}
+	}
+	
+	// Create table contains chart, link for a list of stocks
+	// Display table in "container"
+	function createChartTable(container, stockSymbols){
+	
+		console.log('createChartTable');
+	
+		var body = document.body;
+		
+		var	tbl  = document.createElement('table');			
+			
+		tbl.style.width  = '100px';
+		tbl.style.border = '1px solid black';
+		
+		var tr;
+		for (var index = 0; index < stockSymbols.length; index++) {
+			if (index % COL_NUM == 0) {
+				tr = tbl.insertRow();
+			}
+			
+			// 1. Create a cell
+			var td = tr.insertCell();
+			td.style.border = '1px solid black';
+			
+			// 1.1. Create price chart for one stock symbol
+			var priceDiv = document.createElement("div");
+			priceDiv.setAttribute("id", "chart");
+			priceDiv.setAttribute("class", "img_bieudo");
+
+			// Intraday price chart url
+			var backgroudUrl = "http://s.cafef.vn/chartindex/pricechart.ashx?symbol={0}&type=price".format(stockSymbols[index].symbol);
+
+			//priceDiv.setAttribute("style", "height: " + CHART_CELL_HEIGHT + "px; width: " + CHART_CELL_WIDTH + "px; background: url(\"http://s.cafef.vn/chartindex/pricechart.ashx?symbol=" + stockSymbols[index] + "&type=price\") no-repeat center center; background-size: " + CHART_SCALE + "% " + CHART_SCALE+ "%;");
+			priceDiv.setAttribute("style", "height: " + CHART_CELL_HEIGHT + "px; width: " + CHART_CELL_WIDTH + "px; " 
+				+ " background: url(\"" + backgroudUrl + "\") no-repeat center center; background-size: " + CHART_SCALE + "% " + CHART_SCALE+ "%;");
+
+			// Double click to open Techcom Securities link.	
+			// TCBS summary report pdf 
+			var link = "https://static.tcbs.com.vn/oneclick/{0}.pdf".format(stockSymbols[index].symbol);
+			
+			//priceDiv.setAttribute("ondblclick", "window.open(\"https://static.tcbs.com.vn/oneclick/" + stockSymbols[index] + ".pdf\", '_blank');");
+			priceDiv.setAttribute("ondblclick", "window.open(\"" + link + "\", '_blank');");
+
+			// Ctrl + click
+			// Must use closure here to keep url for each index
+			priceDiv.onclick = (function(event) { 
+					var url = stockSymbols[index].url;
+
+					return function(event) { 
+						if (event.ctrlKey) {
+							window.open(url, '_blank');
+						}
+					}
+					 
+				})();
+			
+			td.appendChild(priceDiv);
+
+			if(isShowVolumeChart()) {
+				// 1.2. Create volume chart for one stock symbol
+				var volumeDiv = document.createElement("div");
+				volumeDiv.setAttribute("id", "volume_chart");
+				volumeDiv.setAttribute("class", "img_bieudo");
+
+				// Intraday volume chart url
+				var backgroudUrl = "http://s.cafef.vn/chartindex/pricechart.ashx?symbol={0}&type=volume".format(stockSymbols[index].symbol);
+
+				volumeDiv.setAttribute("style", "height: " + CHART_CELL_HEIGHT + "px; width: " + CHART_CELL_WIDTH + "px; " 
+					+ " background: url(\"" + backgroudUrl + "\") no-repeat center center; background-size: " + CHART_SCALE + "% " + CHART_SCALE+ "%;");
+
+				// Double click to open cophieu68: history by volume.
+				var volumeLink = "http://www.cophieu68.vn/historyprice_byvolume.php?id={0}".format(stockSymbols[index].symbol);
+				
+				volumeDiv.setAttribute("ondblclick", "window.open(\"" + volumeLink + "\", '_blank');");
+
+				td.appendChild(volumeDiv);
+			}			
+		}
+		
+		container.appendChild(tbl);
+	}
+
+	function isShowVolumeChart() {
+		var chbox = document.getElementById('chbox_showVolumeChart');
+		return chbox.checked;
+	}
+
+	function doChartSettingChanged() {
+		loadDataJson();
+
+		doGroupChanged();
+	}
+
+	function doGroupChanged() {
+		console.log('doGroupChanged');
+		var chboxVN30 = document.getElementById('chbox_VN30');
+
+		if (chboxVN30.checked) {
+			var vn30Container = document.getElementById('vn30_container');
+			vn30Container.style.display = "block";
+
+			clearContainer(vn30Container);
+
+			var titleDiv = document.createElement('div');
+			titleDiv.innerHTML = ("VN30");
+			vn30Container.appendChild(titleDiv);
+
+			createChartTable(vn30Container, MCK_VN30);
+		} else {
+			var vn30Container = document.getElementById('vn30_container');
+			vn30Container.style.display = "none";
+		}
+
+		var chboxHNX30 = document.getElementById('chbox_HNX30');
+
+		if (chboxHNX30.checked) {
+			var hnx30Container = document.getElementById('hnx30_container');
+			hnx30Container.style.display = "block";
+
+			clearContainer(hnx30Container);
+
+			var titleDiv = document.createElement('div');
+			titleDiv.innerHTML = ("HNX30");
+			hnx30Container.appendChild(titleDiv);
+
+			createChartTable(hnx30Container, MCK_HNX30);
+		} else {
+			var hnx30Container = document.getElementById('hnx30_container');
+			hnx30Container.style.display = "none";
+		}
+
+	}
+
+	function showDateTime() {
+		
+		document.getElementById('txt_dateTime').innerHTML = getDateTime();
+		var t = setTimeout(showDateTime, 500);
+	}
+	function checkTime(i) {
+		if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+		return i;
+	}
+
+	function getDateTime() {
+		var now     = new Date(); 
+		var year    = now.getFullYear();
+		var month   = now.getMonth()+1; 
+		var day     = now.getDate();
+		var hour    = now.getHours();
+		var minute  = now.getMinutes();
+		var second  = now.getSeconds(); 
+		if(month.toString().length == 1) {
+			var month = '0'+month;
+		}
+		if(day.toString().length == 1) {
+			var day = '0'+day;
+		}   
+		if(hour.toString().length == 1) {
+			var hour = '0'+hour;
+		}
+		if(minute.toString().length == 1) {
+			var minute = '0'+minute;
+		}
+		if(second.toString().length == 1) {
+			var second = '0'+second;
+		}   
+		var dateTime = year+'/'+month+'/'+day+' '+hour+':'+minute+':'+second;   
+		return dateTime;
+	}
+
+jQuery().ready(function() {  
+	//$("#cmbStock").change(function(){
+	//	loadDataJson();
+	//})
+//
+	//$("#cmbCate").change(function(){
+	//	loadDataJson();
+	//})
+
+	$('#files').on('change',handleFileSelect);
+})
+
+	
+</script>
+
+<div style="display:block;overflow-x:auto; border: 1px solid black;">
+	<div id="txt_dateTime"></div>
+</div>
+
+<div style="display:block;overflow-x:auto; border: 1px solid black;"> 
+	<div> Chart Settings </div>  
+	<label><input type="checkbox" name="checkShowVolumeChart" id="chbox_showVolumeChart"  onchange="doChartSettingChanged();"/>Show Volume Chart</label>
+</div>
+
+<div style="display:block;overflow-x:auto; border: 1px solid black;"> 
+
+	<div> VN-Index ---- HNX-Index </div>  
+
+    <div class="bieudo1" style="display: block;">
+        
+		<!-- <div id="headerchart1" class="img_bieudo" style="height: 130px; width: 280px; background: url(&quot;http://s.cafef.vn/chartindex/chartheader.ashx?rd=1523253278484&quot;) no-repeat center center;"></div> -->
+		
+		<img src="http://s.cafef.vn/chartindex/chartheader.ashx" width=300 height=100>
+        <!-- <div id="headerchart1" class="img_bieudo" style="height: 130px; width: 280px; background: url(&quot;http://s.cafef.vn/chartindex/merge/cafefchart3.png?d=201849&quot;) no-repeat center center"></div> -->
+    
+	
+	</div>    
+</div>
+
+<div style="display:block;overflow-x:auto; border: 1px solid black;"> 
+	<div> Select Group </div>  
+	<label><input type="checkbox" name="checkVN30" id="chbox_VN30"  onchange="doGroupChanged();"/>VN30</label>
+	<label><input type="checkbox" name="checkHNX30" id="chbox_HNX30"  onchange="doGroupChanged();"/>HNX30</label>
+       
+</div>
+
+<div style="display:block;overflow-x:auto; border: 1px solid black;"> 
+	<div> Select Option </div>  
+	<label>Sàn giao dịch:</label>
+   	<select name="cmbStock" id="cmbStock" onchange="loadDataJson()">
+		<option selected="selected" value="1">HoSE</option>
+		<option value="2">HASTC</option>
+		<option value="9">UpCOM</option>
+	</select>
+	<label>Ngành nghề:</label> 
+	<select name="cmbCate" id="cmbCate" onchange="loadDataJson()">
+		<option selected="selected" value="">Tất cả các ngành</option>
+		<option value="345">Bất động sản và Xây dựng</option>
+		<option value="347">Công nghệ</option>
+		<option value="343">Công nghiệp</option>
+		<option value="346">Dịch vụ</option>
+		<option value="349">Doanh nghiệp OTC</option>
+		<option value="350">Doanh nghiệp Upcom</option>
+		<option value="339">Hàng tiêu dùng</option>
+		<option value="340">Năng lượng</option>
+		<option value="344">Nguyên vật liệu</option>
+		<option value="338">Nông nghiệp</option>
+		<option value="341">Tài chính</option>
+		<option value="348">Viễn thông</option>
+		<option value="342">Y tế</option>	
+	</select>
+       
+</div>
+
+<div style="display:none;overflow-x:auto; border: 1px solid black;"> 
+	<input type="file" id="files" name="files[]" multiple />
+	<div>Com:</div>
+	<div>D:\Data\Hiep\Google Drive\Stock\AHiep\Phan tich\T3_Explorer_Batch\T3.csv</div>
+	<div>Home:</div>
+	<div>D:\Google Drive\Stock\AHiep\Phan tich\T3_Explorer_Batch\T3.csv</div>
+</div>
+
+<div style="height: 20px;"></div>
+
+<div id = "vn30_container" class="bieudo_header" style="display:block;overflow-x:auto; border: 1px solid black;">
+</div>
+
+<div style="height: 20px;"></div>
+
+<div id = "hnx30_container" class="bieudo_header" style="display:block;overflow-x:auto; border: 1px solid black;">
+</div>
+
+<div style="height: 20px;"></div>  
+
+<div id = "stock_n_cate_label">  </div>
+<div id = "stock_n_cate_container" class="bieudo_header" style="display:block;overflow-x:auto; border: 1px solid black;">
+    
+</div>
+
+<div id = "t3_view" style="display:block;overflow-x:auto; border: 1px solid black;">
+</div>
+
+<footer>
+  <p>Posted by: bimat_batmi</p>
+  <p>Contact information: <a href="mailto:hitechno@gmail.com">
+	hitechno@gmail.com</a>.</p>
+</footer>
+
+
+</body>
+</html>
