@@ -218,7 +218,7 @@
 
 		var blob = null;
 		var xhr = new XMLHttpRequest(); 
-		xhr.open("GET", "https://drive.google.com/uc?export=download&id=131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF"); 
+		xhr.open("GET", "https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=131yNsPpymqv-JiXIyZIvaA9PxpdQeCnF"); 
 		xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
 		xhr.onload = function() 
 		{
