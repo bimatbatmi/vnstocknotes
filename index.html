@@ -191,6 +191,12 @@
 	
 		var x = new XMLHttpRequest();
 		x.open(options.method, cors_api_url + options.url);
+		x.setRequestHeader(
+            'X-Requested-With',
+            {
+                toString: function() { return ''; }
+            }
+        );
 		x.onload = x.onerror = function() {
 		  console.log(
 			options.method + ' ' + options.url + '\n' +
@@ -245,6 +251,12 @@
 		
 		var blob = null;
 		var xhr = new XMLHttpRequest(); 
+		x.setRequestHeader(
+            'X-Requested-With',
+            {
+                toString: function() { return ''; }
+            }
+        );
 		xhr.open("GET", url);
 		xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
 		xhr.onload = function() 
