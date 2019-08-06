@@ -173,7 +173,7 @@
 			// Great success! All the File APIs are supported.
 		} else {
 			alert('The File APIs are not fully supported in this browser.');
-		}
+		}			
 
 		loadCSV();
 		
@@ -183,9 +183,10 @@
 	//var HTTP_REQUEST_PROXY_URL = 'https://jsonp.afeld.me/?url=';
 	
 	// Can load Google drive file url
-	//var HTTP_REQUEST_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+	var HTTP_REQUEST_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
 	
-	var HTTP_REQUEST_PROXY_URL = 'https://cors-escape.herokuapp.com/'
+	// not work
+	//var HTTP_REQUEST_PROXY_URL = 'https://cors-escape.herokuapp.com/'
 	
 	function load2() {
 		var cors_api_url = HTTP_REQUEST_PROXY_URL;
@@ -655,45 +656,48 @@
 		// HOSE: load all stocks	
 		stock = 1; 
 		var stockSymbolQueryUrl = HTTP_REQUEST_PROXY_URL + "http://s.cafef.vn/ajax/marketmap.ashx?stock=" + stock;
-
+				
 		console.log('loadAllStockFromCafef: ' + stockSymbolQueryUrl);
-		// var http = $.ajax({
-		// 	url: stockSymbolQueryUrl,
-		// 	async: false, 
-		// 	dataType: "json"        //This is what makes jQuery parse the data in the expected format
-		// });
-
-		// http.done(function(data){
-		// 	// data is already parsed as JSON
-		// 	console.log('loadAllStockFromCafef: request done');
-			
-		// 	for(var i = 1; i < data.length; i++) {
-		// 		var obj = data[i];
-
-		// 		ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
-		// 	}
-		// });
-
-		var req1 = getXMLHttpRequest();
-		//req.responseType = 'json';
-		req1.onreadystatechange = function() {
-
-			if (this.readyState == 4 && this.status == 200) {
-				console.log('loadAllStockFromCafef: request done, responseText: ' + this.responseText);
-				console.log('loadAllStockFromCafef: request done, reponse: ' + this.response);
-				var data = JSON.parse(this.responseText);
-				for(var i = 1; i < data.length; i++) {
-					var obj = data[i];
-
-					ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
-				}
-			}
-		};
-  
-		req1.open('GET', stockSymbolQueryUrl, true);
-		//req.setRequestHeader("Access-Control-Allow-Origin", '*');		
 		
-		req1.send();
+		
+		
+		 var http = $.ajax({
+		 	url: stockSymbolQueryUrl,
+		 	async: false, 
+		 	dataType: "json"        //This is what makes jQuery parse the data in the expected format
+		 });
+
+		 http.done(function(data){
+		 	// data is already parsed as JSON
+		 	console.log('loadAllStockFromCafef: request done');
+			
+		 	for(var i = 1; i < data.length; i++) {
+		 		var obj = data[i];
+
+		 		ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+		 	}
+		 });
+
+		//var req1 = getXMLHttpRequest();
+		////req.responseType = 'json';
+		//req1.onreadystatechange = function() {
+//
+		//	if (this.readyState == 4 && this.status == 200) {
+		//		console.log('loadAllStockFromCafef: request done, responseText: ' + this.responseText);
+		//		console.log('loadAllStockFromCafef: request done, reponse: ' + this.response);
+		//		var data = JSON.parse(this.responseText);
+		//		for(var i = 1; i < data.length; i++) {
+		//			var obj = data[i];
+//
+		//			ALL_MCK.push({symbol: obj.NoneSymbol, url: obj.Url});
+		//		}
+		//	}
+		//};
+  //
+		//req1.open('GET', stockSymbolQueryUrl, true);
+		////req.setRequestHeader("Access-Control-Allow-Origin", '*');		
+		//
+		//req1.send();
 
 		// HASTC: load all stocks
 		stock = 2; 
