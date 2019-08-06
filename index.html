@@ -185,7 +185,8 @@
 	
 	function load2() {
 		var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
-		var options.method = 'GET';
+		var options = {};
+		options.method = 'GET';
 		options.url = 'http://s.cafef.vn/ajax/marketmap.ashx?stock=1';
 	
 		var x = new XMLHttpRequest();
