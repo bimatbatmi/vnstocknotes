@@ -181,10 +181,14 @@
 	}
 	
 	//var HTTP_REQUEST_PROXY_URL = 'https://jsonp.afeld.me/?url=';
-	var HTTP_REQUEST_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+	
+	// Can load Google drive file url
+	//var HTTP_REQUEST_PROXY_URL = 'https://cors-anywhere.herokuapp.com/';
+	
+	var HTTP_REQUEST_PROXY_URL = 'https://cors-escape.herokuapp.com/'
 	
 	function load2() {
-		var cors_api_url = 'https://cors-anywhere.herokuapp.com/';
+		var cors_api_url = HTTP_REQUEST_PROXY_URL;
 		var options = {};
 		options.method = 'GET';
 		options.url = 'http://s.cafef.vn/ajax/marketmap.ashx?stock=1';
