@@ -197,14 +197,14 @@
                 toString: function() { return ''; }
             }
         );
-		x.setRequestHeader(
-            'Origin',
-            null
-        );
-		x.setRequestHeader(
-            'Referer',
-            null
-        );
+		//x.setRequestHeader(
+        //    'Origin',
+        //    null
+        //);
+		//x.setRequestHeader(
+        //    'Referer',
+        //    null
+        //);
 		x.onload = x.onerror = function() {
 		  console.log(
 			options.method + ' ' + options.url + '\n' +
@@ -266,14 +266,14 @@
                 toString: function() { return ''; }
             }
         );
-		xhr.setRequestHeader(
-            'Origin',
-            null
-        );
-		xhr.setRequestHeader(
-            'Referer',
-            null
-        );
+		//xhr.setRequestHeader(
+        //    'Origin',
+        //    null
+        //);
+		//xhr.setRequestHeader(
+        //    'Referer',
+        //    null
+        //);
 		xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
 		xhr.onload = function() 
 		{
