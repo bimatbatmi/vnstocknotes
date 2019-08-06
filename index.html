@@ -250,14 +250,14 @@
 		var url = stockSymbolQueryUrl;
 		
 		var blob = null;
-		var xhr = new XMLHttpRequest(); 
+		var xhr = new XMLHttpRequest();		
+		xhr.open("GET", url);
 		xhr.setRequestHeader(
             'X-Requested-With',
             {
                 toString: function() { return ''; }
             }
         );
-		xhr.open("GET", url);
 		xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
 		xhr.onload = function() 
 		{
